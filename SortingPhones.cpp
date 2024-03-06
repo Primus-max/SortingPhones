@@ -18,8 +18,8 @@ enum  PhoneType
     HomePhone
 };
 
-void FillPhonesNumbers(long long int* arr,  int size, PhoneType type);
-void PrintArray(long long int* arr, int size, PhoneType type);
+void FillPhonesNumbers(long long int* arr, int* identifiers, int size, PhoneType type);
+void PrintArray(long long int* arr, int* identifires, int size, PhoneType type);
 void SortByMobilePhones(long long int* mobilePhones, long long int* homePhones, int* identifiers, int size);
 void SortByHomePhones(long long int* mobilePhones, long long int* homePhones, int* identifiers, int size);
 void DisplayMenu();
@@ -31,18 +31,18 @@ int main()
     const int size = 10;        
     long long int MobilePhones[size];
     long long int HomePhones[size];
-    int Id[] = {0, 1, 2, 3, 4, 5, 6 , 7, 8, 9 };
+    int Id[size];
 
-    FillPhonesNumbers(MobilePhones, size, MobilePhone);
-    FillPhonesNumbers(HomePhones,  size, HomePhone);
-    PrintArray(MobilePhones, size, MobilePhone);
+    FillPhonesNumbers(MobilePhones, Id, size, MobilePhone);
+    FillPhonesNumbers(HomePhones, Id, size, HomePhone);
+   // PrintArray(MobilePhones, Id, size, MobilePhone);
 
     int userChoice;
     do {
         DisplayMenu();
-        cout << "Выберите действие (1-4): ";
+        cout << "Выберите действие (1-4): " ;
         cin >> userChoice;
-
+        cout << "\n";
         switch (userChoice) {
         case 1:
             SortByMobilePhones(MobilePhones, HomePhones, Id, size);            
@@ -51,8 +51,8 @@ int main()
             SortByHomePhones(MobilePhones, HomePhones, Id, size);
             break;
         case 3:
-            PrintArray(MobilePhones, size, MobilePhone);
-            PrintArray(HomePhones, size, HomePhone);
+            PrintArray(MobilePhones, Id, size, MobilePhone);
+            PrintArray(HomePhones, Id, size, HomePhone);
             break;
         case 4:
             cout << "До свидания!\n";
@@ -65,7 +65,7 @@ int main()
     
 }
 
-void FillPhonesNumbers(long long int* arr,  int size, PhoneType type) {
+void FillPhonesNumbers(long long int* arr, int* identifiers,  int size, PhoneType type) {
     random_device random;
     int operators[] = { 955, 921, 988, 923 };
     int sizePhoneNumber = (type == MobilePhone) ? 11 : 7;
@@ -87,29 +87,30 @@ void FillPhonesNumbers(long long int* arr,  int size, PhoneType type) {
             *i = *i * 10 + digit;
         }
     }
-    }
 
+    for (int i = 0; i < size; i++)
+    {
+        identifiers[i] = i;
+    }
+}
 
 
 // В этом случае не обязательно использовать указатель, но для закрепления.
-void PrintArray(long long int* arr, int size, PhoneType type) {
-
+void PrintArray(long long int* arr, int* identifiers, int size, PhoneType type) {
     cout << (type == MobilePhone ? "Список мобильных номеров" : "Список городских номеров") << endl;
     cout << "\n";
-    for (long long int* i = arr; i < arr + size; i++)
-    {
-        cout << ((i + 1) - arr)<< ". " << "[ " << *i << " ]" << endl;
+    for (int i = 0; i < size; i++) {
+        cout << identifiers[i] << ". " << "[ " << arr[i] << " ]" << endl;
     }
     cout << "-----------------------------------------------" << endl;
-
 }
 
-void SortByMobilePhones(long long int* mobilePhones, long long int* homePhones, int* identifiers, int size) {  
-  
-    for (int i = size  - 1; i > 0; --i) {
+
+void SortByMobilePhones(long long int* mobilePhones, long long int* homePhones, int* identifiers, int size) {
+    for (int i = size - 1; i > 0; --i) {
         for (int j = 0; j < i; ++j) {
             if (mobilePhones[j] > mobilePhones[j + 1]) {
-                
+              
                 long long int tempMobile = mobilePhones[j];
                 mobilePhones[j] = mobilePhones[j + 1];
                 mobilePhones[j + 1] = tempMobile;
@@ -117,8 +118,10 @@ void SortByMobilePhones(long long int* mobilePhones, long long int* homePhones, 
                 long long int tempHome = homePhones[j];
                 homePhones[j] = homePhones[j + 1];
                 homePhones[j + 1] = tempHome;
-                                
-                identifiers[j] = j;
+
+                int tempId = identifiers[j];
+                identifiers[j] = identifiers[j + 1];
+                identifiers[j + 1] = tempId;
             }
         }
     }
@@ -139,8 +142,9 @@ void SortByHomePhones(long long int* mobilePhones, long long int* homePhones, in
                 homePhones[j] = homePhones[j + 1];
                 homePhones[j + 1] = tempHome;
 
-
-                identifiers[j] = j;
+                int tempId = identifiers[j];
+                identifiers[j] = identifiers[j + 1];
+                identifiers[j + 1] = tempId;
             }
         }
     }
