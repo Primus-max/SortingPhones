@@ -45,11 +45,10 @@ int main()
 
         switch (userChoice) {
         case 1:
-            SortByMobilePhones(MobilePhones, HomePhones, Id, size);
-            PrintArray(MobilePhones, size, MobilePhone);
+            SortByMobilePhones(MobilePhones, HomePhones, Id, size);            
             break;
         case 2:
-            // Допишите сортировку домашних телефонов
+            SortByHomePhones(MobilePhones, HomePhones, Id, size);
             break;
         case 3:
             PrintArray(MobilePhones, size, MobilePhone);
