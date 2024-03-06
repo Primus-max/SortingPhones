@@ -42,22 +42,35 @@ void FillPhonesNumbers(long long int* arr, int size, PhoneType type) {
     int sizePhoneNumber = (type == MobilePhone) ? 11 : 7;
 
     for (long long int* i = arr; i < arr + size; i++) {
+        // Инициализация номера телефона
         *i = (type == MobilePhone) ? 7 : 7812;
 
-        for (int j = (type == MobilePhone) ? 1 : 0; j < sizePhoneNumber; j++) {
+        // Выбор случайного оператора
+        int randomOperatorIndex = random() % (sizeof(operators) / sizeof(operators[0]));
+        int selectedOperator = operators[randomOperatorIndex];
+
+        if(type == MobilePhone)
+        *i = *i * 1000 + selectedOperator;
+
+        // Генерация оставшихся цифр номера телефона
+        for (int j = (type == MobilePhone) ? 4 : 0; j < sizePhoneNumber; j++) {
             int digit = random() % 10;  
             *i = *i * 10 + digit;       
         }
     }
 }
 
+
 // В этом случае не обязательно использовать указатель, но для закрепления.
 void PrintArray(long long int* arr, int size, PhoneType type) {
 
     cout << (type == MobilePhone ? "Список мобильных номеров" : "Список городских номеров") << endl;
+    cout << "\n";
     for (long long int* i = arr; i < arr + size; i++)
     {
         cout << "[ " << *i << " ]" << endl;
     }
+    cout << "-----------------------------------------------" << endl;
+
 }
 
